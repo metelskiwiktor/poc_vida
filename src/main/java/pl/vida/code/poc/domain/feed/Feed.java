@@ -14,7 +14,7 @@ public class Feed {
     @GeneratedValue(generator = "my-uuid")
     @GenericGenerator(name = "my-uuid", strategy = "uuid")
     private String id;
-    @Column(length = 4566320)
+    @Column(length = 20000000)
     private String content;
     private LocalDate createdAt;
     private String originalFilename;

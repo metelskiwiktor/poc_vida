@@ -11,6 +11,7 @@ import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
+import pl.vida.code.poc.domain.feed.JmsErrorHandler;
 
 import javax.jms.ConnectionFactory;
 
@@ -18,9 +19,11 @@ import javax.jms.ConnectionFactory;
 public class BrokerConfiguration {
     @Bean
     public JmsListenerContainerFactory<?> myFactory(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory,
-                                                    DefaultJmsListenerContainerFactoryConfigurer configurer) {
+                                                    DefaultJmsListenerContainerFactoryConfigurer configurer,
+                                                    JmsErrorHandler jmsErrorHandler) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         configurer.configure(factory, connectionFactory);
+        factory.setErrorHandler(jmsErrorHandler);
         return factory;
     }
 

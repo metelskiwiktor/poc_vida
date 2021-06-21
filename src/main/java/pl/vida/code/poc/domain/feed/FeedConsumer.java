@@ -25,8 +25,8 @@ public class FeedConsumer {
     @JmsListener(destination = "feed", containerFactory = "myFactory")
     public void processFeed(Feed feed) {
         FeedContentParsed feedContentParsed = findExtensionHandler(feed.getExtension()).toFeed(feed.getContent(), feed.getOriginalFilename(), feed.getId());
-        feedContentRecordRepository.saveAll(feedContentParsed.getFeedContentRecords());
-        feedContentParsedRepository.save(feedContentParsed);
+//        feedContentRecordRepository.saveAll(feedContentParsed.getFeedContentRecords());
+//        feedContentParsedRepository.save(feedContentParsed);
     }
 
     private ExtensionHandler findExtensionHandler(Extension extension) {
