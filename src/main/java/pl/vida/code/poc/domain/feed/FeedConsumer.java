@@ -4,7 +4,7 @@ import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 import pl.vida.code.poc.domain.feed.handler.CsvHandler;
 import pl.vida.code.poc.domain.feed.handler.ExtensionHandler;
-import pl.vida.code.poc.domain.feed.handler.XmlHandler;
+import pl.vida.code.poc.domain.feed.handler.xml.XmlHandler;
 
 @Component
 public class FeedConsumer {
