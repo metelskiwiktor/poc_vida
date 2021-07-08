@@ -8,17 +8,20 @@ import java.util.*;
 
 public class XmlData {
     private final String feedId;
-    private final Map<Integer, Map<String, List<String>>> nestedColumns;
+    private final Map<Integer, Map<String, List<Map<Integer, String>>>> nestedColumns;
+    private int actualRows;
 
     private XmlData(String feedId) {
         this.feedId = feedId;
         this.nestedColumns = new HashMap<>();
     }
 
-    public static XmlData create(String feedId, Document document){
-        XmlData xmlData = new XmlData(feedId);
-        xmlData.parseDocument(document);
-        return xmlData;
+    public String getFeedId() {
+        return feedId;
+    }
+
+    public Map<Integer, Map<String, List<Map<Integer, String>>>> getNestedColumns() {
+        return nestedColumns;
     }
 
     private void parseDocument(Document document) {
@@ -44,32 +47,38 @@ public class XmlData {
 
     private void printNodeColumns(int spaces, NodeList nodeList) {
         int nodesLength = nodeList.getLength();
-        String whitespaces = " ".repeat(spaces);
         for (int i = 0; i < nodesLength; i++) {
             Node node = nodeList.item(i);
             if (node.getNodeName().startsWith("#")) {
                 continue;
             }
-            System.out.printf("%s(%d) %s%n", whitespaces, spaces, node.getNodeName());
             if (hasNestedNodes(node.getChildNodes())) {
                 printNodeColumns(spaces + 1, node.getChildNodes());
             } else {
-//                System.out.println("poczatek else");
-//                System.out.println(node.getChildNodes().item(0).getNodeValue());
-//                System.out.println("koniec else");
-                Map<String, List<String>> stringListMap;
                 if (!nestedColumns.containsKey(spaces)) {
                     nestedColumns.put(spaces, new HashMap<>());
                 }
+                Map<String, List<Map<Integer, String>>> stringListMap;
                 stringListMap = nestedColumns.get(spaces);
+                Map<Integer, String> record = new HashMap<>();
                 if(stringListMap.containsKey(node.getNodeName())) {
-                    List<String> strings = stringListMap.get(node.getNodeName());
-                    strings.add(node.getChildNodes().item(0).getNodeValue());
+                    List<Map<Integer, String>> strings = stringListMap.get(node.getNodeName());
+                    actualRows = Math.max(strings.size(), actualRows);
+                    record.put(actualRows, node.getChildNodes().item(0).getNodeValue());
+                    strings.add(record);
                 } else {
-                    stringListMap.put(node.getNodeName(), new ArrayList<>(Arrays.asList(node.getChildNodes().item(0).getNodeValue())));
+                    record.put(0, node.getChildNodes().item(0).getNodeValue());
+                    stringListMap.put(node.getNodeName(),new ArrayList<>(Collections.singletonList(record)));
                 }
             }
         }
+        actualRows = 0;
+    }
+
+    public static XmlData create(String feedId, Document document){
+        XmlData xmlData = new XmlData(feedId);
+        xmlData.parseDocument(document);
+        return xmlData;
     }
     //nodes without # at start
     private boolean hasNestedNodes(NodeList nodeList) {
@@ -83,13 +92,5 @@ public class XmlData {
             nestedNodes++;
         }
         return nestedNodes > 0;
-    }
-
-    @Override
-    public String toString() {
-        return "XmlData{" +
-                "feedId='" + feedId + '\'' +
-                ", nestedColumns=" + nestedColumns +
-                '}';
     }
 }

@@ -1,13 +1,14 @@
 package pl.vida.code.poc.api.response;
 
 import java.util.List;
+import java.util.Map;
 
 public class FeedContentRecordView {
     private final String columnId;
     private final String column;
-    private final List<String> contents;
+    private final Map<Integer, String> contents;
 
-    public FeedContentRecordView(String columnId, String column, List<String> contents) {
+    public FeedContentRecordView(String columnId, String column, Map<Integer, String> contents) {
         this.columnId = columnId;
         this.column = column;
         this.contents = contents;
@@ -21,7 +22,7 @@ public class FeedContentRecordView {
         return column;
     }
 
-    public List<String> getContents() {
+    public Map<Integer, String> getContents() {
         return contents;
     }
 }

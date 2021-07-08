@@ -4,25 +4,26 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
-public class FeedContentRecord {
+public class FeedContentColumn {
     @Id
     private String columnId;
     private String column;
+//    @ElementCollection
+//    @Column(length = 30000)
+//    private List<String> contents;
     @ElementCollection
     @Column(length = 30000)
-    private List<String> contents;
+    private Map<Integer, String> recordIndexContents;
 
-    public FeedContentRecord() {
+    public FeedContentColumn() {
     }
 
-    public FeedContentRecord(String column) {
+    public FeedContentColumn(String column) {
         this.column = column;
-        this.contents = new ArrayList<>();
+        this.recordIndexContents = new HashMap<>();
         this.columnId = UUID.randomUUID().toString();
     }
 
@@ -30,12 +31,12 @@ public class FeedContentRecord {
         return column;
     }
 
-    public List<String> getContents() {
-        return contents;
+    public Map<Integer, String> getRecordIndexContents() {
+        return recordIndexContents;
     }
 
-    public void addContent(String content) {
-        contents.add(content);
+    public void addContent(Integer index, String content) {
+        recordIndexContents.put(index, content);
     }
 
     public String getColumnId() {
@@ -45,10 +46,10 @@ public class FeedContentRecord {
 
     @Override
     public String toString() {
-        return "FeedContentRecord{" +
+        return "FeedContentColumn{" +
                 "columnId='" + columnId + '\'' +
                 ", column='" + column + '\'' +
-                ", contents=" + contents +
+                ", recordIndexContents=" + recordIndexContents +
                 '}';
     }
 }

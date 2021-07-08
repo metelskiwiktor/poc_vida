@@ -25,20 +25,20 @@ public class FeedService {
     private final ConversionService conversionService;
     private final JmsTemplate jmsTemplate;
     private final FeedContentParsedRepository feedContentParsedRepository;
-    private final FeedContentRecordRepository feedContentRecordRepository;
+    private final FeedContentColumnRepository feedContentColumnRepository;
     private final CompletedFeedRepository completedFeedRepository;
     private final CompletedFeedPairRepository completedFeedPairRepository;
 
     public FeedService(FeedRepository feedRepository, ConversionService conversionService, JmsTemplate jmsTemplate,
                        FeedContentParsedRepository feedContentParsedRepository,
-                       FeedContentRecordRepository feedContentRecordRepository,
+                       FeedContentColumnRepository feedContentColumnRepository,
                        CompletedFeedRepository completedFeedRepository,
                        CompletedFeedPairRepository completedFeedPairRepository) {
         this.feedRepository = feedRepository;
         this.conversionService = conversionService;
         this.jmsTemplate = jmsTemplate;
         this.feedContentParsedRepository = feedContentParsedRepository;
-        this.feedContentRecordRepository = feedContentRecordRepository;
+        this.feedContentColumnRepository = feedContentColumnRepository;
         this.completedFeedRepository = completedFeedRepository;
         this.completedFeedPairRepository = completedFeedPairRepository;
     }
@@ -75,11 +75,11 @@ public class FeedService {
     private List<CompletedFeedPair> map(List<FeedColumnRequiredColumnPair> columnPairs) {
         return columnPairs.stream()
                 .map(feedColumnRequiredColumnPair -> {
-                    FeedContentRecord feedContentRecord =
-                            feedContentRecordRepository.getByColumnId(feedColumnRequiredColumnPair.getColumnId());
+                    FeedContentColumn feedContentColumn =
+                            feedContentColumnRepository.getByColumnId(feedColumnRequiredColumnPair.getColumnId());
                     return new CompletedFeedPair(
                             feedColumnRequiredColumnPair.getRequiredColumn(),
-                            feedContentRecord);
+                            feedContentColumn);
                 }).collect(Collectors.toList());
     }
 

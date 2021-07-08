@@ -14,14 +14,14 @@ public class FeedContentParsed {
     @Column(unique = true)
     private String feedId;
     @OneToMany
-    private List<FeedContentRecord> feedContentRecords;
+    private List<FeedContentColumn> feedContentColumns;
 
     public FeedContentParsed() {
     }
 
-    public FeedContentParsed(String feedId, List<FeedContentRecord> feedContentRecords) {
+    public FeedContentParsed(String feedId, List<FeedContentColumn> feedContentColumns) {
         this.feedId = feedId;
-        this.feedContentRecords = feedContentRecords;
+        this.feedContentColumns = feedContentColumns;
     }
 
     public String getId() {
@@ -32,8 +32,8 @@ public class FeedContentParsed {
         return feedId;
     }
 
-    public List<FeedContentRecord> getFeedContentRecords() {
-        return feedContentRecords;
+    public List<FeedContentColumn> getFeedContentRecords() {
+        return feedContentColumns;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class FeedContentParsed {
         return "FeedContentParsed{" +
                 "id='" + id + '\'' +
                 ", feedId='" + feedId + '\'' +
-                ", feedContentRecords=" + feedContentRecords +
+                ", feedContentRecords=" + feedContentColumns +
                 '}';
     }
 }

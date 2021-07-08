@@ -13,12 +13,12 @@ public class CompletedFeedPair {
     @Enumerated(EnumType.STRING)
     private FeedColumn feedColumn;
     @ManyToOne
-    private FeedContentRecord feedContentRecords;
+    private FeedContentColumn feedContentRecords;
 
     public CompletedFeedPair() {
     }
 
-    public CompletedFeedPair(FeedColumn feedColumn, FeedContentRecord feedContentRecords) {
+    public CompletedFeedPair(FeedColumn feedColumn, FeedContentColumn feedContentRecords) {
         this.feedColumn = feedColumn;
         this.feedContentRecords = feedContentRecords;
     }
@@ -31,7 +31,7 @@ public class CompletedFeedPair {
         return feedColumn;
     }
 
-    public FeedContentRecord getFeedContentRecords() {
+    public FeedContentColumn getFeedContentRecords() {
         return feedContentRecords;
     }
 }

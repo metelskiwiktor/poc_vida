@@ -1,4 +1,4 @@
-package pl.vida.code.poc.domain.feed.handler;
+package pl.vida.code.poc.domain.feed.handler.csv;
 
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
@@ -8,7 +8,8 @@ import com.opencsv.exceptions.CsvException;
 import org.springframework.stereotype.Component;
 import pl.vida.code.poc.domain.exception.DomainException;
 import pl.vida.code.poc.domain.feed.FeedContentParsed;
-import pl.vida.code.poc.domain.feed.FeedContentRecord;
+import pl.vida.code.poc.domain.feed.FeedContentColumn;
+import pl.vida.code.poc.domain.feed.handler.ExtensionHandler;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -39,15 +40,16 @@ public class CsvHandler implements ExtensionHandler {
     }
 
     private FeedContentParsed parseContentToFeedContentParsed(String[] columns, List<String[]> rowsWithContent, String feedId) {
-        List<FeedContentRecord> feedContentRecords = new ArrayList<>();
+        List<FeedContentColumn> feedContentColumns = new ArrayList<>();
         for(int columnIndex = 0; columnIndex < columns.length - 1; columnIndex++) {
-            FeedContentRecord feedContentRecord = new FeedContentRecord(columns[columnIndex]);
+            FeedContentColumn feedContentColumn = new FeedContentColumn(columns[columnIndex]);
+            int rowIndex = 0;
             for(String[] rowWithContent: rowsWithContent) {
-                feedContentRecord.addContent(rowWithContent[columnIndex]);
+                feedContentColumn.addContent(rowIndex++, rowWithContent[columnIndex]);
             }
-            feedContentRecords.add(feedContentRecord);
+            feedContentColumns.add(feedContentColumn);
         }
-        return new FeedContentParsed(feedId, feedContentRecords);
+        return new FeedContentParsed(feedId, feedContentColumns);
     }
 
 }
